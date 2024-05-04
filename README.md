@@ -9,5 +9,5 @@ No need for convoluted nested loops or funky logic.
 ### Code provided AS-IS
 - Happy Path code implementation
 - Look at the Jest tests to see how it works
-- No support (ain't nobdoy got time for that)
+- No support (ain't nobody got time for that)
 - Have the fun  :D
