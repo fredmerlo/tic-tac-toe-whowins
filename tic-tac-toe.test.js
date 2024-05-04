@@ -44,21 +44,22 @@ test('whoWins when board is a draw return "No winner"', () => {
 test('whoWins random play', () => {
     let randomPlayBoard = emptyBoard;
     let whoseTurn = Math.random() < 0.5 ? 'X' : 'O';
+    let playBoardItemStack = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-    while(whoWins(randomPlayBoard) === 'No winner' && randomPlayBoard.includes('-')) {
-        index = Math.floor(Math.random() * 9);
+    while((winner = whoWins(randomPlayBoard)) === 'No winner' && playBoardItemStack.length) {
+        index = Math.floor(Math.random() * playBoardItemStack.length);
 
-        if(randomPlayBoard[index] === '-') {
-            randomPlayBoard[index] = whoseTurn;
-            whoseTurn = whoseTurn === 'X' ? 'O' : 'X';
-        }
+        randomPlayBoard[playBoardItemStack[index]] = whoseTurn;
+        whoseTurn = whoseTurn === 'X' ? 'O' : 'X';
+
+        playBoardItemStack.splice(index, 1);
     }
 
-    expect(['X', 'O', 'No winner']).toContain(whoWins(randomPlayBoard));
+    expect(['X', 'O', 'No winner']).toContain(winner);
 
     console.table([
         [randomPlayBoard[0], randomPlayBoard[1], randomPlayBoard[2]],
         [randomPlayBoard[3], randomPlayBoard[4], randomPlayBoard[5]], 
         [randomPlayBoard[6], randomPlayBoard[7], randomPlayBoard[8]]]);
-    console.log(`Winner: ${whoWins(randomPlayBoard)}`);
+    console.log(`Winner: ${winner}`);
 });
