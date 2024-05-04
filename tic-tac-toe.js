@@ -17,28 +17,33 @@ const combinationLookup = validCombinations.reduce((acc, [key, value]) => {
 // Aka Magic Square, technically here it be a Magic List
 const weights = [8, 1, 6, 3, 5, 7, 4, 9, 2];
 
+const WINNING_COMBINATION_TOTAL = 15;
+
 whoWins = (board) => {
     let players = { 'X': new Array(8).fill(0), 'O': new Array(8).fill(0) };
 
     // Board is a flattened 3x3 so always 9 elements
     for(let i = 0; i < weights.length; i++) {
         const sums = combinationLookup[i];
-        const currentPlayer = players[board[i]];
+        let currentPlayer = players[board[i]];
 
         if(currentPlayer) {
-            sums.forEach((sum) => {
-                currentPlayer[sum] += weights[i];
-            });
+            // sum valid combinations
+            currentPlayer = sums.reduce((acc, sum) => {
+                acc[sum] += weights[i];
+                return acc;
+            }, currentPlayer);
         }
 
-        if(isWinner(players, 'X') || isWinner(players, 'O')) {
-            return isWinner(players, 'X') || isWinner(players, 'O');
+        const winner = isWinner(players, 'X') || isWinner(players, 'O');
+        if(winner) {
+            return winner;
         }
     }
 
     return 'No winner';
 };
 
-isWinner = (players, player) => players[player].includes(15) ? player : null;
+isWinner = (players, player) => players[player].includes(WINNING_COMBINATION_TOTAL) ? player : null;
 
 module.exports = whoWins;
