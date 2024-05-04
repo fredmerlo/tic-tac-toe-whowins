@@ -5,7 +5,7 @@ const whoWins = require('./tic-tac-toe');
 // ['O','X','X']
 // ['-','-','O']
 
-const emptyBoard = ['-', '-',' -', '-', '-', '-', '-', '-', '-'];
+const emptyBoard = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
 const gameInProgressBoard = ['O', '-', 'X', '-', '-', 'O', '-', '-', '-'];
 const winnerXTopHorizontalRowBoard = ['X', 'X', 'X', '-', '-', 'O', '-', 'O', '-'];
 const winnerOMiddleVerticalColumnBoard = ['X', 'O', 'X', '-', 'O', 'X', '-', 'O', '-'];

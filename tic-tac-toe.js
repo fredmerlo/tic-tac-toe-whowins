@@ -1,35 +1,19 @@
 whoWins = (board) => {
     // Aka Magic Square, technically here it be a Magic List
     const weights = [8, 1, 6, 3, 5, 7, 4, 9, 2];
-
-    let sumX = 0, sumO = 0;
-    let countX = 0, countO = 0;
+    let players = { 'X': { sum: 0, count: 0}, 'O': { sum: 0, count: 0 } };
 
     // Board is a flattened 3x3 so always 9 elements
-    for(let i = 0; i < 9; i++) {
-        switch(board[i]) {
-            case 'X':
-                sumX += weights[i];
-                countX++;
-                break;
-            case 'O':
-                sumO += weights[i];
-                countO++;
-                break;
-            default:
-                break;
+    for(let i = 0; i < weights.length; i++) {
+        if(players[board[i]]) {
+            players[board[i]].sum += weights[i];
+            players[board[i]].count++;
         }
     }
 
-    if(sumX === 15 && countX === 3) {
-        return 'X';
-    }
-    
-    if(sumO === 15 && countO === 3) {
-        return 'O';
-    }
+    return isWinner(players, 'X') || isWinner(players, 'O') || 'No winner';
+};
 
-    return 'No winner';
-}
+isWinner = (players, player) => players[player].sum === 15 && players[player].count === 3 ? player : null;
 
 module.exports = whoWins;
