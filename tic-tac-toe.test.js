@@ -41,3 +41,21 @@ test('whoWins when winner is X on horizontal top left', () => {
 test('whoWins when board is a draw return "No winner"', () => {
     expect(whoWins(gameIsDrawBoard)).toBe('No winner');
 });
+
+test('whoWins random play', () => {
+    let randomPlayBoard = emptyBoard;
+    let whoseTurn = Math.random() < 0.5 ? 'X' : 'O';
+
+    while(whoWins(randomPlayBoard) === 'No winner' && randomPlayBoard.includes('-')) {
+        index = Math.floor(Math.random() * 9);
+
+        if(randomPlayBoard[index] === '-') {
+            randomPlayBoard[index] = whoseTurn;
+            whoseTurn = whoseTurn === 'X' ? 'O' : 'X';
+        }
+    }
+
+    expect(['X', 'O', 'No winner']).toContain(whoWins(randomPlayBoard));
+
+    console.log(`Winner: ${whoWins(randomPlayBoard)}`);
+});
