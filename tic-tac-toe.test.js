@@ -34,7 +34,6 @@ test('whoWins when winner is O on horizontal top right', () => {
 });
 
 test('whoWins when winner is X on horizontal top left', () => {
-
     expect(whoWins(winnerXHorizontalTopLeftBoard)).toBe('X');
 });
 
@@ -57,5 +56,9 @@ test('whoWins random play', () => {
 
     expect(['X', 'O', 'No winner']).toContain(whoWins(randomPlayBoard));
 
+    console.table([
+        [randomPlayBoard[0], randomPlayBoard[1], randomPlayBoard[2]],
+        [randomPlayBoard[3], randomPlayBoard[4], randomPlayBoard[5]], 
+        [randomPlayBoard[6], randomPlayBoard[7], randomPlayBoard[8]]]);
     console.log(`Winner: ${whoWins(randomPlayBoard)}`);
 });
