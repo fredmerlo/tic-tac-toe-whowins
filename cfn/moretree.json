@@ -1,0 +1,1789 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "ppsc-logmon": {
+        "id": "ppsc-logmon",
+        "path": "ppsc-logmon",
+        "children": {
+          "kms": {
+            "id": "kms",
+            "path": "ppsc-logmon/kms",
+            "children": {
+              "dev-ppsc-logmon-kms-key": {
+                "id": "dev-ppsc-logmon-kms-key",
+                "path": "ppsc-logmon/kms/dev-ppsc-logmon-kms-key",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/kms/dev-ppsc-logmon-kms-key/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "KMS key for encrypting CloudTrail, CloudWatch, and SNS data",
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:CancelKeyDeletion",
+                                "kms:Create*",
+                                "kms:Delete*",
+                                "kms:Describe*",
+                                "kms:Disable*",
+                                "kms:Enable*",
+                                "kms:Get*",
+                                "kms:List*",
+                                "kms:Put*",
+                                "kms:Revoke*",
+                                "kms:ScheduleKeyDeletion",
+                                "kms:TagResource",
+                                "kms:UntagResource",
+                                "kms:Update*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt*",
+                                "kms:Describe*",
+                                "kms:Encrypt*",
+                                "kms:GenerateDataKey*",
+                                "kms:ListAliases*"
+                              ],
+                              "Condition": {
+                                "StringLike": {
+                                  "kms:EncryptionContext:aws:sns:topicArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:sns:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":dev*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "cloudwatch.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt*",
+                                "kms:Describe*",
+                                "kms:Encrypt*",
+                                "kms:GenerateDataKey*",
+                                "kms:ListAliases*"
+                              ],
+                              "Condition": {
+                                "ArnLike": {
+                                  "aws:SourceArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:cloudtrail:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":trail/dev*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "cloudtrail.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt*",
+                                "kms:Describe*",
+                                "kms:Encrypt*",
+                                "kms:GenerateDataKey*",
+                                "kms:ListAliases*"
+                              ],
+                              "Condition": {
+                                "ArnLike": {
+                                  "aws:SourceArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:logs:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":log-group:/aws/cloudtrail/dev*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "logs.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt*",
+                                "kms:Describe*",
+                                "kms:Encrypt*",
+                                "kms:GenerateDataKey*",
+                                "kms:ListAliases*"
+                              ],
+                              "Condition": {
+                                "ArnLike": {
+                                  "aws:SourceArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:sns:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":dev*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "sns.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "keySpec": "SYMMETRIC_DEFAULT",
+                        "pendingWindowInDays": 7,
+                        "rotationPeriodInDays": 180
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Alias": {
+                    "id": "Alias",
+                    "path": "ppsc-logmon/kms/dev-ppsc-logmon-kms-key/Alias",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ppsc-logmon/kms/dev-ppsc-logmon-kms-key/Alias/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
+                          "aws:cdk:cloudformation:props": {
+                            "aliasName": "alias/dev-ppsc-logmon-kms-key",
+                            "targetKeyId": {
+                              "Fn::GetAtt": [
+                                "devppsclogmonkmskeyB6063AD5",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_kms.CfnAlias",
+                          "version": "2.155.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.Alias",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.155.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "ppsc-logmon/kms/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "ppsc-logmon/kms/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "ppsc-logmon/kms/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "Exports": {
+                "id": "Exports",
+                "path": "ppsc-logmon/kms/Exports",
+                "children": {
+                  "Output{\"Fn::GetAtt\":[\"devppsclogmonkmskeyB6063AD5\",\"Arn\"]}": {
+                    "id": "Output{\"Fn::GetAtt\":[\"devppsclogmonkmskeyB6063AD5\",\"Arn\"]}",
+                    "path": "ppsc-logmon/kms/Exports/Output{\"Fn::GetAtt\":[\"devppsclogmonkmskeyB6063AD5\",\"Arn\"]}",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnOutput",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "BootstrapVersion": {
+                "id": "BootstrapVersion",
+                "path": "ppsc-logmon/kms/BootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.155.0"
+                }
+              },
+              "CheckBootstrapVersion": {
+                "id": "CheckBootstrapVersion",
+                "path": "ppsc-logmon/kms/CheckBootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnRule",
+                  "version": "2.155.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stack",
+              "version": "2.155.0"
+            }
+          },
+          "trail": {
+            "id": "trail",
+            "path": "ppsc-logmon/trail",
+            "children": {
+              "dev-ppsc-logmon-trail-log-bucket": {
+                "id": "dev-ppsc-logmon-trail-log-bucket",
+                "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "aws:kms",
+                                "kmsMasterKeyId": {
+                                  "Fn::ImportValue": "dev-ppsc-logmon-kms:ExportsOutputFnGetAttdevppsclogmonkmskeyB6063AD5Arn15863E55"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "bucketName": "dev-ppsc-logmon-trail-logs",
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        },
+                        "tags": [
+                          {
+                            "key": "aws-cdk:auto-delete-objects",
+                            "value": "true"
+                          }
+                        ],
+                        "versioningConfiguration": {
+                          "status": "Enabled"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "devppsclogmontraillogbucketC44BA3DE"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "devppsclogmontraillogbucketC44BA3DE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "devppsclogmontraillogbucketC44BA3DE",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "s3:DeleteObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:PutBucketPolicy"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::GetAtt": [
+                                        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                        "Arn"
+                                      ]
+                                    }
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "devppsclogmontraillogbucketC44BA3DE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "devppsclogmontraillogbucketC44BA3DE",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:PutObject",
+                                  "Condition": {
+                                    "StringEquals": {
+                                      "s3:x-amz-acl": "bucket-owner-full-control"
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "cloudtrail.amazonaws.com"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "devppsclogmontraillogbucketC44BA3DE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "devppsclogmontraillogbucketC44BA3DE",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/AWSLogs/",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:GetBucketAcl",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "cloudtrail.amazonaws.com"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "devppsclogmontraillogbucketC44BA3DE",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.155.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "AutoDeleteObjectsCustomResource": {
+                    "id": "AutoDeleteObjectsCustomResource",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket/AutoDeleteObjectsCustomResource",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-bucket/AutoDeleteObjectsCustomResource/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.155.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CustomResource",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.155.0"
+                }
+              },
+              "LatestNodeRuntimeMap": {
+                "id": "LatestNodeRuntimeMap",
+                "path": "ppsc-logmon/trail/LatestNodeRuntimeMap",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnMapping",
+                  "version": "2.155.0"
+                }
+              },
+              "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
+                "id": "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+                "path": "ppsc-logmon/trail/Custom::S3AutoDeleteObjectsCustomResourceProvider",
+                "children": {
+                  "Staging": {
+                    "id": "Staging",
+                    "path": "ppsc-logmon/trail/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Role": {
+                    "id": "Role",
+                    "path": "ppsc-logmon/trail/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Handler": {
+                    "id": "Handler",
+                    "path": "ppsc-logmon/trail/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResourceProviderBase",
+                  "version": "2.155.0"
+                }
+              },
+              "dev-ppsc-logmon-trail-log-group": {
+                "id": "dev-ppsc-logmon-trail-log-group",
+                "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-group",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail-log-group/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsKeyId": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-kms:ExportsOutputFnGetAttdevppsclogmonkmskeyB6063AD5Arn15863E55"
+                        },
+                        "logGroupName": "/aws/cloudtrail/dev-ppsc-logmon-trail",
+                        "retentionInDays": 365
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+                  "version": "2.155.0"
+                }
+              },
+              "dev-ppsc-logmon-trail": {
+                "id": "dev-ppsc-logmon-trail",
+                "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail",
+                "children": {
+                  "LogsRole": {
+                    "id": "LogsRole",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/LogsRole",
+                    "children": {
+                      "ImportLogsRole": {
+                        "id": "ImportLogsRole",
+                        "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/LogsRole/ImportLogsRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.155.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/LogsRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "cloudtrail.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.155.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/LogsRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/LogsRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "devppsclogmontrailloggroup878A696F",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "devppsclogmontrailLogsRoleDefaultPolicyE9A6EE8B",
+                                "roles": [
+                                  {
+                                    "Ref": "devppsclogmontrailLogsRole3BBE7E17"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.155.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.155.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/trail/dev-ppsc-logmon-trail/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudTrail::Trail",
+                      "aws:cdk:cloudformation:props": {
+                        "cloudWatchLogsLogGroupArn": {
+                          "Fn::GetAtt": [
+                            "devppsclogmontrailloggroup878A696F",
+                            "Arn"
+                          ]
+                        },
+                        "cloudWatchLogsRoleArn": {
+                          "Fn::GetAtt": [
+                            "devppsclogmontrailLogsRole3BBE7E17",
+                            "Arn"
+                          ]
+                        },
+                        "enableLogFileValidation": true,
+                        "eventSelectors": [],
+                        "includeGlobalServiceEvents": true,
+                        "isLogging": true,
+                        "isMultiRegionTrail": true,
+                        "kmsKeyId": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-kms:ExportsOutputFnGetAttdevppsclogmonkmskeyB6063AD5Arn15863E55"
+                        },
+                        "s3BucketName": {
+                          "Ref": "devppsclogmontraillogbucketC44BA3DE"
+                        },
+                        "trailName": "dev-ppsc-logmon-trail"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudtrail.CfnTrail",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudtrail.Trail",
+                  "version": "2.155.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "ppsc-logmon/trail/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "ppsc-logmon/trail/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "ppsc-logmon/trail/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "Exports": {
+                "id": "Exports",
+                "path": "ppsc-logmon/trail/Exports",
+                "children": {
+                  "Output{\"Ref\":\"devppsclogmontrailloggroup878A696F\"}": {
+                    "id": "Output{\"Ref\":\"devppsclogmontrailloggroup878A696F\"}",
+                    "path": "ppsc-logmon/trail/Exports/Output{\"Ref\":\"devppsclogmontrailloggroup878A696F\"}",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnOutput",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "BootstrapVersion": {
+                "id": "BootstrapVersion",
+                "path": "ppsc-logmon/trail/BootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.155.0"
+                }
+              },
+              "CheckBootstrapVersion": {
+                "id": "CheckBootstrapVersion",
+                "path": "ppsc-logmon/trail/CheckBootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnRule",
+                  "version": "2.155.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stack",
+              "version": "2.155.0"
+            }
+          },
+          "sns": {
+            "id": "sns",
+            "path": "ppsc-logmon/sns",
+            "children": {
+              "dev-ppsc-logmon-sns-alarm-topic": {
+                "id": "dev-ppsc-logmon-sns-alarm-topic",
+                "path": "ppsc-logmon/sns/dev-ppsc-logmon-sns-alarm-topic",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/sns/dev-ppsc-logmon-sns-alarm-topic/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-kms:ExportsOutputFnGetAttdevppsclogmonkmskeyB6063AD5Arn15863E55"
+                        },
+                        "topicName": "dev-ppsc-logmon-sns-alarm-topic"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "merlo-fred@norc.org": {
+                    "id": "merlo-fred@norc.org",
+                    "path": "ppsc-logmon/sns/dev-ppsc-logmon-sns-alarm-topic/merlo-fred@norc.org",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "ppsc-logmon/sns/dev-ppsc-logmon-sns-alarm-topic/merlo-fred@norc.org/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                          "aws:cdk:cloudformation:props": {
+                            "endpoint": "merlo-fred@norc.org",
+                            "protocol": "email",
+                            "topicArn": {
+                              "Ref": "devppsclogmonsnsalarmtopic83E47FDE"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                          "version": "2.155.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.Subscription",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Topic",
+                  "version": "2.155.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "ppsc-logmon/sns/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "ppsc-logmon/sns/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "ppsc-logmon/sns/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "Exports": {
+                "id": "Exports",
+                "path": "ppsc-logmon/sns/Exports",
+                "children": {
+                  "Output{\"Ref\":\"devppsclogmonsnsalarmtopic83E47FDE\"}": {
+                    "id": "Output{\"Ref\":\"devppsclogmonsnsalarmtopic83E47FDE\"}",
+                    "path": "ppsc-logmon/sns/Exports/Output{\"Ref\":\"devppsclogmonsnsalarmtopic83E47FDE\"}",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnOutput",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "BootstrapVersion": {
+                "id": "BootstrapVersion",
+                "path": "ppsc-logmon/sns/BootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.155.0"
+                }
+              },
+              "CheckBootstrapVersion": {
+                "id": "CheckBootstrapVersion",
+                "path": "ppsc-logmon/sns/CheckBootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnRule",
+                  "version": "2.155.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stack",
+              "version": "2.155.0"
+            }
+          },
+          "metrics": {
+            "id": "metrics",
+            "path": "ppsc-logmon/metrics",
+            "children": {
+              "SignInWithoutMFA-metric-filter": {
+                "id": "SignInWithoutMFA-metric-filter",
+                "path": "ppsc-logmon/metrics/SignInWithoutMFA-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/SignInWithoutMFA-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ ($.eventName = \"ConsoleLogin\") && ($.additionalEventData.MFAUsed = \"No\") }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-SignInWithoutMFA",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "SignInWithoutMFA-alarm": {
+                "id": "SignInWithoutMFA-alarm",
+                "path": "ppsc-logmon/metrics/SignInWithoutMFA-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/SignInWithoutMFA-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric SignInWithoutMFA from CloudTrail. Alarm SignInWithoutMFA is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-SignInWithoutMFA",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-SignInWithoutMFA",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "SignInFailure-metric-filter": {
+                "id": "SignInFailure-metric-filter",
+                "path": "ppsc-logmon/metrics/SignInFailure-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/SignInFailure-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ ($.eventName = \"ConsoleLogin\") && ($.responseElements.ConsoleLogin = \"Failure\") }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-SignInFailure",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "SignInFailure-alarm": {
+                "id": "SignInFailure-alarm",
+                "path": "ppsc-logmon/metrics/SignInFailure-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/SignInFailure-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric SignInFailure from CloudTrail. Alarm SignInFailure is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-SignInFailure",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-SignInFailure",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "RootAccountUsage-metric-filter": {
+                "id": "RootAccountUsage-metric-filter",
+                "path": "ppsc-logmon/metrics/RootAccountUsage-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/RootAccountUsage-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.userIdentity.type = \"Root\" && $.eventName = \"ConsoleLogin\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-RootAccountUsage",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "RootAccountUsage-alarm": {
+                "id": "RootAccountUsage-alarm",
+                "path": "ppsc-logmon/metrics/RootAccountUsage-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/RootAccountUsage-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric RootAccountUsage from CloudTrail. Alarm RootAccountUsage is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-RootAccountUsage",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-RootAccountUsage",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMUserChanges-metric-filter": {
+                "id": "IAMUserChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/IAMUserChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMUserChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"CreateUser\" || $.eventName = \"DeleteUser\" || $.eventName = \"UpdateUser\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-IAMUserChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMUserChanges-alarm": {
+                "id": "IAMUserChanges-alarm",
+                "path": "ppsc-logmon/metrics/IAMUserChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMUserChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric IAMUserChanges from CloudTrail. Alarm IAMUserChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-IAMUserChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-IAMUserChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMRoleChanges-metric-filter": {
+                "id": "IAMRoleChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/IAMRoleChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMRoleChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"CreateRole\" || $.eventName = \"DeleteRole\" || $.eventName = \"UpdateRole\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-IAMRoleChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMRoleChanges-alarm": {
+                "id": "IAMRoleChanges-alarm",
+                "path": "ppsc-logmon/metrics/IAMRoleChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMRoleChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric IAMRoleChanges from CloudTrail. Alarm IAMRoleChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-IAMRoleChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-IAMRoleChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMGroupChanges-metric-filter": {
+                "id": "IAMGroupChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/IAMGroupChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMGroupChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"CreateGroup\" || $.eventName = \"DeleteGroup\" || $.eventName = \"UpdateGroup\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-IAMGroupChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMGroupChanges-alarm": {
+                "id": "IAMGroupChanges-alarm",
+                "path": "ppsc-logmon/metrics/IAMGroupChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMGroupChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric IAMGroupChanges from CloudTrail. Alarm IAMGroupChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-IAMGroupChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-IAMGroupChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMPolicyChanges-metric-filter": {
+                "id": "IAMPolicyChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/IAMPolicyChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMPolicyChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"PutUserPolicy\" || $.eventName = \"DeleteUserPolicy\" || $.eventName = \"PutGroupPolicy\" || $.eventName = \"DeleteGroupPolicy\" || $.eventName = \"PutRolePolicy\" || $.eventName = \"DeleteRolePolicy\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-IAMPolicyChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "IAMPolicyChanges-alarm": {
+                "id": "IAMPolicyChanges-alarm",
+                "path": "ppsc-logmon/metrics/IAMPolicyChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/IAMPolicyChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric IAMPolicyChanges from CloudTrail. Alarm IAMPolicyChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-IAMPolicyChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-IAMPolicyChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "NetworkAclChanges-metric-filter": {
+                "id": "NetworkAclChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/NetworkAclChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/NetworkAclChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"CreateNetworkAcl\" || $.eventName = \"DeleteNetworkAcl\" || $.eventName = \"ReplaceNetworkAclEntry\" || $.eventName = \"ReplaceNetworkAclAssociation\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-NetworkAclChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "NetworkAclChanges-alarm": {
+                "id": "NetworkAclChanges-alarm",
+                "path": "ppsc-logmon/metrics/NetworkAclChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/NetworkAclChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric NetworkAclChanges from CloudTrail. Alarm NetworkAclChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-NetworkAclChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-NetworkAclChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "RouteTableChanges-metric-filter": {
+                "id": "RouteTableChanges-metric-filter",
+                "path": "ppsc-logmon/metrics/RouteTableChanges-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/RouteTableChanges-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.eventName = \"CreateRoute\" || $.eventName = \"DeleteRoute\" || $.eventName = \"ReplaceRoute\" || $.eventName = \"CreateRouteTable\" || $.eventName = \"DeleteRouteTable\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-RouteTableChanges",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "RouteTableChanges-alarm": {
+                "id": "RouteTableChanges-alarm",
+                "path": "ppsc-logmon/metrics/RouteTableChanges-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/RouteTableChanges-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric RouteTableChanges from CloudTrail. Alarm RouteTableChanges is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-RouteTableChanges",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-RouteTableChanges",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "UnauthorizedAPICalls-metric-filter": {
+                "id": "UnauthorizedAPICalls-metric-filter",
+                "path": "ppsc-logmon/metrics/UnauthorizedAPICalls-metric-filter",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/UnauthorizedAPICalls-metric-filter/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::MetricFilter",
+                      "aws:cdk:cloudformation:props": {
+                        "filterPattern": "{ $.errorCode = \"AccessDenied\" || $.errorCode = \"UnauthorizedOperation\" }",
+                        "logGroupName": {
+                          "Fn::ImportValue": "dev-ppsc-logmon-trail:ExportsOutputRefdevppsclogmontrailloggroup878A696F2DA5D646"
+                        },
+                        "metricTransformations": [
+                          {
+                            "metricNamespace": "PPSC-Security-Monitoring",
+                            "metricName": "dev-ppsc-logmon-metrics-UnauthorizedAPICalls",
+                            "metricValue": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnMetricFilter",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.MetricFilter",
+                  "version": "2.155.0"
+                }
+              },
+              "UnauthorizedAPICalls-alarm": {
+                "id": "UnauthorizedAPICalls-alarm",
+                "path": "ppsc-logmon/metrics/UnauthorizedAPICalls-alarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "ppsc-logmon/metrics/UnauthorizedAPICalls-alarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmActions": [
+                          {
+                            "Fn::ImportValue": "dev-ppsc-logmon-sns:ExportsOutputRefdevppsclogmonsnsalarmtopic83E47FDE0D20B2A4"
+                          }
+                        ],
+                        "alarmDescription": "Metric UnauthorizedAPICalls from CloudTrail. Alarm UnauthorizedAPICalls is triggered when suspicious activity is detected.",
+                        "alarmName": "dev-ppsc-logmon-metrics-alarm-UnauthorizedAPICalls",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "dev-ppsc-logmon-metrics-UnauthorizedAPICalls",
+                        "namespace": "PPSC-Security-Monitoring",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 1,
+                        "treatMissingData": "notBreaching"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.155.0"
+                }
+              },
+              "CDKMetadata": {
+                "id": "CDKMetadata",
+                "path": "ppsc-logmon/metrics/CDKMetadata",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "ppsc-logmon/metrics/CDKMetadata/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.155.0"
+                    }
+                  },
+                  "Condition": {
+                    "id": "Condition",
+                    "path": "ppsc-logmon/metrics/CDKMetadata/Condition",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.155.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "BootstrapVersion": {
+                "id": "BootstrapVersion",
+                "path": "ppsc-logmon/metrics/BootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.155.0"
+                }
+              },
+              "CheckBootstrapVersion": {
+                "id": "CheckBootstrapVersion",
+                "path": "ppsc-logmon/metrics/CheckBootstrapVersion",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnRule",
+                  "version": "2.155.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stack",
+              "version": "2.155.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "ppsc-logmon/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "ppsc-logmon/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.155.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "ppsc-logmon/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.155.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "ppsc-logmon/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.155.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.155.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.155.0"
+    }
+  }
+}
